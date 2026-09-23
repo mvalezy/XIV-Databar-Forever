@@ -6,12 +6,17 @@ local WOW_PROJECT_CATACLYSM_CLASSIC = _G.WOW_PROJECT_CATACLYSM_CLASSIC
 local WOW_PROJECT_MISTS_CLASSIC = _G.WOW_PROJECT_MISTS_CLASSIC
 XIVBar.compat = compat
 
--- Version flags
+-- Forever uses a modern client with Classic content. The project ID alone
+-- is not a reliable content/API selector on beta builds (see AceDB-3.0).
+local _, _, _, interfaceVersion = GetBuildInfo()
+compat.interfaceVersion = interfaceVersion
+compat.isForever = interfaceVersion > 16000 and interfaceVersion < 20000
 compat.projectId = WOW_PROJECT_ID
-compat.isClassicEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+compat.isClassicEra = not compat.isForever and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 compat.isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 compat.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 compat.isMainline = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+compat.isRetail = compat.isMainline and not compat.isForever
 compat.isCata = WOW_PROJECT_CATACLYSM_CLASSIC and WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 compat.isMists = WOW_PROJECT_MISTS_CLASSIC and WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 compat.isClassicOrTBC = compat.isClassicEra or compat.isTBC
@@ -302,7 +307,7 @@ compat.features = {
         available = not compat.isClassicOrTBC,
     },
     travel = {
-        secondaryPorts = compat.isMainline or compat.isMists,
+        secondaryPorts = compat.isRetail or compat.isMists,
     },
     armor = {
         -- Equipment sets were added in Mists of Pandaria.

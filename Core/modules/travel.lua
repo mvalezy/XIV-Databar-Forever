@@ -24,8 +24,9 @@ local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 -- Safe IsUsableItem wrapper with compatibility check
 local function SafeIsUsableItem(id)
-    if compat.isMists and not IsUsableItem then return false end
-    return IsUsableItem(id)
+    local isUsable = (C_Item and C_Item.IsUsableItem) or IsUsableItem
+    if not isUsable then return false end
+    return isUsable(id)
 end
 
 local function GetOwnedItemCount(id)
@@ -144,7 +145,7 @@ function TravelModule:OnInitialize()
         profile.hideAdditionalTooltipText = true
     end
 
-    if xb.db and xb.db.char and xb.db.char.portItem == nil then
+    if SupportsSecondaryPorts() and xb.db and xb.db.char and xb.db.char.portItem == nil then
         xb.db.char.portItem = self:FindFirstOption()
     end
 
@@ -154,7 +155,7 @@ function TravelModule:OnInitialize()
         260221, -- Naaru's Embrace (Classic)
         184871 -- Dark Portal (Classic)
     }
-    if compat.isMainline then
+    if compat.isRetail then
         self.hearthstones = {
             263933, -- Preyseeker's Hearthstone
             265100, -- Corewarden's Hearthstone
@@ -380,7 +381,7 @@ function TravelModule:OnDisable()
     self:UnregisterEvent('BAG_UPDATE_DELAYED')
     self:UnregisterEvent('HEARTHSTONE_BOUND')
     self:UnregisterEvent('GET_ITEM_INFO_RECEIVED')
-    if compat.isMainline then
+    if compat.isRetail then
         self:UnregisterEvent('PLAYER_HOUSE_LIST_UPDATED')
     end
 end
@@ -440,7 +441,7 @@ function TravelModule:CreateFrames()
     end
 
     -- Home (Housing) Part - Retail only
-    if compat.isMainline then
+    if compat.isRetail then
         self.homeButton = self.homeButton or
                               CreateFrame('BUTTON', 'homeButton',
                                           self.hearthFrame,
@@ -540,7 +541,7 @@ function TravelModule:RegisterFrameEvents()
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'RefreshHearthstonesList')
 
     -- Housing events - Retail only (single initial request, no re-request in Update)
-    if compat.isMainline and not self.disableHousing then
+    if compat.isRetail and not self.disableHousing then
         self:RegisterEvent('PLAYER_HOUSE_LIST_UPDATED', 'OnHouseListUpdated')
         if not self.housingRequested then
             self.housingRequested = true
@@ -612,7 +613,7 @@ function TravelModule:RegisterFrameEvents()
     self.portButton:SetScript('OnLeave', createLeaveHandler(function() self:SetPortColor() end))
 
     -- Home button events - Retail only
-    if compat.isMainline and self.homeButton then
+    if compat.isRetail and self.homeButton then
         self.homeButton:EnableMouse(true)
         self.homeButton:RegisterForClicks('AnyUp', 'AnyDown')
 
@@ -909,7 +910,7 @@ end
 
 -- Housing visit cooldown helper
 function TravelModule:GetHousingCooldown()
-    if not compat.isMainline or not C_Housing or not C_Housing.GetVisitCooldownInfo then
+    if not compat.isRetail or not C_Housing or not C_Housing.GetVisitCooldownInfo then
         return 0
     end
 
@@ -928,7 +929,7 @@ function TravelModule:GetHousingCooldown()
 end
 
 function TravelModule:CanReturnAfterVisitingHouse()
-    if not compat.isMainline then
+    if not compat.isRetail then
         return false
     end
 
@@ -981,7 +982,7 @@ function TravelModule:SetHomeActionOverride(action)
 end
 
 function TravelModule:UpdateHomeClickAction()
-    if not compat.isMainline or not self.homeButton or InCombatLockdown() then
+    if not compat.isRetail or not self.homeButton or InCombatLockdown() then
         return
     end
 
@@ -1048,7 +1049,7 @@ function TravelModule:SetSelectedHouseGuid(guid)
 end
 
 function TravelModule:UpdateHouseAttributes()
-    if not compat.isMainline or not self.homeButton then return end
+    if not compat.isRetail or not self.homeButton then return end
 
     if not self.playerHouseList or #self.playerHouseList == 0 then return end
 
@@ -1139,7 +1140,7 @@ end
 
 -- Utility function to check if any mythic teleport is available
 function TravelModule:HasAvailableMythicTeleports()
-    if not compat.isMainline then
+    if not compat.isRetail then
         return false
     end
     local currentSeason = self:GetCurrentSeason()
@@ -1581,7 +1582,7 @@ function TravelModule:ShowHomeTooltip()
 end
 
 function TravelModule:GetMythicTeleportGroups()
-    if not compat.isMainline then
+    if not compat.isRetail then
         return {}
     end
 
@@ -1776,7 +1777,7 @@ function TravelModule:ShowMythicTooltip()
 end
 
 function TravelModule:CreateMythicPopup()
-    if not compat.isMainline then
+    if not compat.isRetail then
         return
     end
 
@@ -1910,7 +1911,7 @@ function TravelModule:Refresh()
     end
 
     local db = xb.db.profile
-    local allowMythic = compat.isMainline and db.enableMythicPortals
+    local allowMythic = compat.isRetail and db.enableMythicPortals
     local supportsSecondaryPorts = SupportsSecondaryPorts()
     local currentSeason = self:GetCurrentSeason()
     if db.hideMythicInOffSeason and not currentSeason then
@@ -2116,7 +2117,7 @@ function TravelModule:Refresh()
     end
 
     -- Home (Housing) Part - Retail only
-    if compat.isMainline and self.homeButton and not db.hideHomeButton then
+    if compat.isRetail and self.homeButton and not db.hideHomeButton then
         -- Choose the parent based on visible buttons
         local homeParentFrame = self.mythicButton and
                                     self.mythicButton:IsShown() and
@@ -2207,7 +2208,7 @@ function TravelModule:Refresh()
     AddShownButtonWidth(self.hearthButton)
     if supportsSecondaryPorts then AddShownButtonWidth(self.portButton) end
     if allowMythic then AddShownButtonWidth(self.mythicButton) end
-    if compat.isMainline then AddShownButtonWidth(self.homeButton) end
+    if compat.isRetail then AddShownButtonWidth(self.homeButton) end
 
     self.hearthFrame:SetSize(totalWidth, xb:GetHeight())
 
@@ -2369,7 +2370,7 @@ function TravelModule:GetDefaultOptions()
         hidePortText = false,
         hideAdditionalTooltipText = true,
         hideHomeButton = false,
-        enableMythicPortals = compat.isMainline,
+        enableMythicPortals = compat.isRetail,
         hideMythicText = false,
         hideMythicInOffSeason = false,
         curSeasonOnly = false,
@@ -2510,7 +2511,7 @@ function TravelModule:GetConfig()
                 name = L["HIDE_HOME_BUTTON"],
                 order = 16,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 get = function()
                     return xb.db.profile.hideHomeButton;
                 end,
@@ -2524,13 +2525,13 @@ function TravelModule:GetConfig()
                 order = 18,
                 name = L["MYTHIC_PLUS_TELEPORTS"],
                 type = 'header',
-                hidden = function() return not compat.isMainline end
+                hidden = function() return not compat.isRetail end
             },
             enableMythicPortals = {
                 name = L["SHOW_MYTHIC_PLUS_TELEPORTS"],
                 order = 20,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 get = function()
                     return xb.db.profile.enableMythicPortals;
                 end,
@@ -2544,7 +2545,7 @@ function TravelModule:GetConfig()
                 name = L["HIDE_M_PLUS_TELEPORTS_TEXT"],
                 order = 22,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 get = function()
                     return xb.db.profile.hideMythicText;
                 end,
@@ -2558,7 +2559,7 @@ function TravelModule:GetConfig()
                 name = L["HIDE_BUTTON_DURING_OFF_SEASON"],
                 order = 23,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 get = function()
                     return xb.db.profile.hideMythicInOffSeason;
                 end,
@@ -2572,7 +2573,7 @@ function TravelModule:GetConfig()
                 name = L["ONLY_SHOW_CURRENT_SEASON"],
                 order = 25,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 get = function()
                     return xb.db.profile.curSeasonOnly;
                 end,
@@ -2586,7 +2587,7 @@ function TravelModule:GetConfig()
                 name = L["SHOW_SEASON_DATES"],
                 order = 25.5,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 disabled = function()
                     return xb.db.profile.curSeasonOnly
                 end,
@@ -2603,7 +2604,7 @@ function TravelModule:GetConfig()
                 name = L["SHOW_UNLEARNED_TELEPORTS"],
                 order = 26,
                 type = "toggle",
-                hidden = function() return not compat.isMainline end,
+                hidden = function() return not compat.isRetail end,
                 get = function()
                     return xb.db.profile.showUnknownTeleports;
                 end,

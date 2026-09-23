@@ -8,8 +8,8 @@ local C_ClassTalents = C_ClassTalents;
 local C_Traits = C_Traits;
 
 local TalentModule = xb:NewModule("TalentModule", 'AceEvent-3.0')
-local GetSpecializationInfo = GetSpecializationInfo;
-local GetSpecialization = GetSpecialization;
+local GetSpecializationInfo = (C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo) or GetSpecializationInfo;
+local GetSpecialization = (C_SpecializationInfo and C_SpecializationInfo.GetSpecialization) or GetSpecialization;
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 

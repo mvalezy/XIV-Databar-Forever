@@ -1,13 +1,6 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Discord][discord-shield]][discord-url]
-[![MIT License][license-shield]][license-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -15,153 +8,136 @@
     <kbd><img src="icon.png" alt="Logo" width="130" height="130"></kbd>
   </a>
 
-  <h3 align="center">XIV_Databar Continued</h3>
+  <h3 align="center">XIV_Databar Continued — Forever fork</h3>
 
   <p align="center">
-    A databar addon for World of Warcraft (Retail and Classic)
+    Personal fork of XIV_Databar Continued, adapted for <strong>World of Warcraft: Forever</strong> (beta 1.60.1)
     <br />
     <br />
-    <a href="https://github.com/ZelionGG/XIV_Databar-Continued/issues">Report Bug</a>
+    <a href="https://github.com/mvalezy/XIV-Databar-Forever/issues">Report a Forever compatibility bug</a>
     ·
-    <a href="https://github.com/ZelionGG/XIV_Databar-Continued/issues">Request Feature</a>
+    <a href="https://github.com/ZelionGG/XIV_Databar-Continued">Original project</a>
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#download">Download</a></li>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#slash-commands">Slash Commands</a></li>
-    <li><a href="#modules">Modules</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#credits">Credits</a></li>
-    <li><a href="#localization">Localization</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#stars">Stars</a></li>
-  </ol>
-</details>
+> [!IMPORTANT]
+> **I am not an official developer and I have no affiliation with the original
+> authors of XIV_Databar Continued.** All credit goes to the authors listed
+> below; my only contribution is making the addon run on WoW Forever, with the
+> help of AI.
+>
+> **This is not the upstream repository.** For features, options, screenshots,
+> the roadmap, translations and everything else about the addon, read the
+> original project instead:
+> **<https://github.com/ZelionGG/XIV_Databar-Continued>**
+>
+> Please do not send ZelionGG or the original contributors questions about this
+> fork, and do not report Forever issues to them. Forever-related issues belong
+> [here](https://github.com/mvalezy/XIV-Databar-Forever/issues).
 
-## Download
+## What this fork contains
 
-[![CurseForge](https://cf.way2muchnoise.eu/title/787614.svg?badge_style=for_the_badge)](https://www.curseforge.com/wow/addons/xiv-databar-continued) [![Wago](https://tinyurl.com/WagoBadge)](https://addons.wago.io/addons/xiv-databar-continued)
-[![WowInterface](https://tinyurl.com/WoWInterfaceBadge)](https://www.wowinterface.com/downloads/info26826-3.7.html) [![Github Releases](https://img.shields.io/badge/GitHub%20Releases-121013?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ZelionGG/XIV_Databar-Continued/releases)
+- The addon code with the changes needed for **WoW Forever 1.60.1**
+  (`_classic_beta_`): new interface version, Forever client detection, adjusted
+  APIs and per-character storage, and Retail-only features disabled where
+  Forever has no content for them.
+- The full list of changes and the install steps: **[FOREVER.md](FOREVER.md)**.
+- Everything else — description, slash commands (`/xivc`, `/xivbar`, `/xbc`),
+  modules, profiles, media and localizations — is unchanged from upstream: see
+  the [original README](https://github.com/ZelionGG/XIV_Databar-Continued#readme).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Installation
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+**The repository does not contain the embedded libraries** (`Libs/`), by design:
+Ace3, LibSharedMedia, LibQTip, LibDataBroker and the others are not stored here.
+So **do not copy this folder into the game as-is** — it would load without its
+libraries and fail. One command fetches them and builds the ready-to-use addon
+folder.
 
-[![XIVScreenshot][xiv-screenshot]](https://www.curseforge.com/wow/addons/xiv_databar-continued)
+### Requirements
 
-Pursuing the work of MilleXIV, [Vicious-wow](https://github.com/Vicious-wow/XIV_Databar) and [Kozoaku](https://github.com/Kozoaku/XIV_Databar).
+- Windows (the game client runs there), plus **Python 3.10 or newer**
+  (`python --version` or `py --version` in PowerShell; install from
+  [python.org](https://www.python.org/downloads/) if needed).
+- An internet connection for the libraries, which are downloaded and
+  checksum-verified against the pinned versions in
+  `scripts/forever-libs.json`.
+- Keep the repository **outside** the game folder, otherwise WoW will try to
+  read it as an addon.
 
-A reworking of [SX_Databar by saxitoxin](https://www.wowinterface.com/downloads/info23745-SX_DataBar.html).
+### Steps (PowerShell)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+```powershell
+# 1. Get the code, once. (You can also use the green "Code" > "Download ZIP"
+#    button and unzip it wherever you like.)
+git clone https://github.com/mvalezy/XIV-Databar-Forever.git "$env:USERPROFILE\XIV-Databar-Forever"
+$addon = "$env:USERPROFILE\XIV-Databar-Forever"
 
-## Slash Commands
-* __/xivc__ or __/xivbar__ or __/xbc__ - shows/hides the GUI
+# 2. Build the complete addon folder: downloads the libraries, verifies the
+#    checksums, checks every file reference, then writes a ZIP.
+$py = "python"   # use "py" if that is what works on your machine
+& $py "$addon\scripts\package_forever.py"
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+# 3. Install it into the game (change the path if your WoW is elsewhere).
+$wow = "D:\World of Warcraft\_classic_beta_\Interface\AddOns"
+$zip = Get-ChildItem "$addon\dist\XIV_Databar_Forever-*.zip" |
+       Sort-Object LastWriteTime | Select-Object -Last 1
+Expand-Archive $zip.FullName -DestinationPath $wow -Force
+```
 
-## Modules
+Before step 3, it is worth backing up `WTF\Account\<account>\SavedVariables\XIV_Databar_Continued.lua`
+and the old addon folder, in case you want to restore your settings.
 
-- Micromenu
-- Durability - With iLvl display
-- Volume (Master)
-- Talent - With spec and loot spec swapping on left/right click
-- Clock
-- Tradeskills
-- Currency - With a mode for XP Bar when below level cap
-- System
-- Gold
-- Travel - Right click the left hearth to choose an alternate transport method
+### Result to check
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+You must end up with exactly this structure, `XIV_Databar_Continued` being the
+folder name given by the ZIP (do not rename it to `XIV-Databar-Forever`):
 
-## Features
+```
+_classic_beta_\Interface\AddOns\XIV_Databar_Continued\
+├── XIV_Databar_Continued.toc     <- ## Interface: 16001
+├── Core\  Mainline\  locales\  media\
+├── Libs\                          <- downloaded by the packager
+├── core.lua  options.lua  embeds.xml  icon.png
+```
 
-- In-Game Config
-- Full profile support
-- LibSharedMedia support
+Launch WoW, enable the addon for your character, then type `/xivc` in game.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Prebuilt archive
 
-## Roadmap
+If you would rather not run Python, grab the ZIP from the
+[releases page](https://github.com/mvalezy/XIV-Databar-Forever/releases) and
+extract it into `_classic_beta_\Interface\AddOns\`.
 
-See the [open issues](https://github.com/ZelionGG/XIV_Databar-Continued/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+> [!NOTE]
+> Building manually with `python3 scripts/package_forever.py --output dist/forever.zip`
+> writes the archive wherever you ask. See [FOREVER.md](FOREVER.md) for the
+> tested commands and the known limitations.
 
 ## Credits
 
-- [https://www.wowinterface.com/downloads/info23745-SX_DataBar.html](saxitoxin) for the SX_Databar AddOn
-- u/sammojo for the idea, textures and the description of the bar
-- u/keyboardturn for updated spec icons
-- MilleXIV for reviving the project and code refactoring
+All credit for the addon belongs to its original authors:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- [ZelionGG](https://github.com/ZelionGG) — maintainer of XIV_Databar Continued
+  and author of most of the current code.
+- [MilleXIV](https://github.com/MilleXIV) — revived the project and refactored
+  the code. Original lead developer of the __XIV_Databar__ fork.
+- [Vicious-wow](https://github.com/Vicious-wow/XIV_Databar) and
+  [Kozoaku](https://github.com/Kozoaku/XIV_Databar) — kept the project going and
+  modernized it before ZelionGG took over.
+- [saxitoxin](https://www.wowinterface.com/downloads/info23745-SX_DataBar.html) —
+  author of SX_Databar, which this addon reworks.
+- u/sammojo — idea, textures and the bar description.
+- u/keyboardturn — updated spec icons.
+- Locale contributors: PhatsoTGT (German), Amanthuul (Russian), Yaoenqi
+  (Chinese), [class2u](https://github.com/class2u) (Chinese, Taiwan),
+  [BrunoKrugel](https://github.com/BrunoKrugel) (Brazilian Portuguese).
 
-## Localization
+The WoW Forever adaptation was done by
+[mvalezy](https://github.com/mvalezy) with AI assistance and applies to this
+fork only.
 
-- PhatsoTGT - German
-- Amanthuul - Russian
-- Yaoenqi - Chinese
-- [class2u](https://github.com/class2u) - Chinese (Taiwan)
-- [BrunoKrugel](https://github.com/BrunoKrugel) - Brazilian Portuguese
-
-__I am actually looking for people that want to help with localization of XIV_Databar Continued, don't hesitate to check [#10](https://github.com/ZelionGG/XIV_Databar-Continued/issues/10) and to contact me on [X (Twitter)](https://twitter.com/ZelionGG)__ 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-**PLEASE DON'T FORGET TO PUT THE VERSION OF THE GAME (RETAIL, WOTLK CLASSIC, VANILLA CLASSIC, ...) IN YOUR ISSUE** 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
 ## License
 
-Distributed under the GPL-3.0 License. See `LICENSE` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- STARS -->
-## Stars
-
-[![Stars over time](https://starchart.cc/ZelionGG/XIV_Databar-Continued.svg?variant=adaptive)](https://starchart.cc/ZelionGG/XIV_Databar-Continued)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-[contributors-shield]: https://img.shields.io/github/contributors/ZelionGG/XIV_Databar-Continued.svg?style=for-the-badge
-[contributors-url]: https://github.com/ZelionGG/XIV_Databar-Continued/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/ZelionGG/XIV_Databar-Continued.svg?style=for-the-badge
-[forks-url]: https://github.com/ZelionGG/XIV_Databar-Continued/network/members
-[stars-shield]: https://img.shields.io/github/stars/ZelionGG/XIV_Databar-Continued.svg?style=for-the-badge
-[stars-url]: https://github.com/ZelionGG/XIV_Databar-Continued/stargazers
-[issues-shield]: https://img.shields.io/github/issues/ZelionGG/XIV_Databar-Continued.svg?style=for-the-badge
-[issues-url]: https://github.com/ZelionGG/XIV_Databar-Continued/issues
-[discord-shield]: https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white
-[discord-url]: https://discord.gg/g7JZNGSU32
-[license-shield]: https://img.shields.io/github/license/ZelionGG/XIV_Databar-Continued.svg?style=for-the-badge
-[license-url]: https://github.com/ZelionGG/XIV_Databar-Continued/blob/master/LICENSE.txt
-[xiv-screenshot]: https://i.ibb.co/k5r5mCg/xiv-databar-continued.png
-[Lua]: https://img.shields.io/badge/lua-000000?style=for-the-badge&logo=lua&logoColor=white
-[Lua-url]: https://www.lua.org/
+Distributed under the GPL-3.0 License, same as upstream. See `LICENSE`, or the
+[original license file](https://github.com/ZelionGG/XIV_Databar-Continued/blob/master/LICENSE.txt).

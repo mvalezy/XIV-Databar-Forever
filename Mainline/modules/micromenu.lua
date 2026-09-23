@@ -446,6 +446,7 @@ function MenuModule:CreateFrames()
 
     for _, cfg in ipairs(buttons) do
         local enabled = mm[cfg.key]
+        if cfg.key == 'house' and not compat.isRetail then enabled = false end
         if enabled then
             local frame = CreateFrame('BUTTON', cfg.frameName or cfg.key, parentFrame, cfg.template)
             self.frames[cfg.key] = frame
@@ -642,8 +643,14 @@ function MenuModule:UpdateGuildText(event)
         self.guildMotd = type(motd) == 'string' and motd or nil
     end
 
-    if not InCombatLockdown() then
-        C_GuildInfo.GuildRoster() -- requests an update to guild roster information from blizzbois
+    -- A roster response must never trigger another request. Other refreshes
+    -- share a throttle so chat/layout activity cannot flood the server.
+    if event ~= 'GUILD_ROSTER_UPDATE' and not InCombatLockdown() then
+        local now = GetTime()
+        if not self.lastRosterRequest or now - self.lastRosterRequest >= 10 then
+            self.lastRosterRequest = now
+            C_GuildInfo.GuildRoster()
+        end
     end
 
     -- get the number of online guild members and set social text to that number
@@ -1293,7 +1300,7 @@ function MenuModule:GetDefaultOptions()
         pvp = true,
         pet = true,
         shop = true,
-        house = true,
+        house = compat.isRetail,
         help = true,
         hideAppContact = false
     }
@@ -1708,6 +1715,7 @@ function MenuModule:GetConfig()
                         name = L["SHOW_HOUSING_BUTTON"],
                         order = 14,
                         type = "toggle",
+                        hidden = not compat.isRetail,
                         get = function()
                             return xb.db.profile.modules.microMenu.house;
                         end,

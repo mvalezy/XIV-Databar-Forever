@@ -666,8 +666,14 @@ function MenuModule:UpdateGuildText(event)
         self.guildMotd = type(motd) == 'string' and motd or nil
     end
 
-    if not InCombatLockdown() then
-        C_GuildInfo.GuildRoster() -- requests an update to guild roster information from blizzbois
+    -- A roster response must never trigger another request. Other refreshes
+    -- share a throttle so chat/layout activity cannot flood the server.
+    if event ~= 'GUILD_ROSTER_UPDATE' and not InCombatLockdown() then
+        local now = GetTime()
+        if not self.lastRosterRequest or now - self.lastRosterRequest >= 10 then
+            self.lastRosterRequest = now
+            C_GuildInfo.GuildRoster()
+        end
     end
 
     -- get the number of online guild members and set social text to that number

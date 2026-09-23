@@ -486,7 +486,7 @@ function GoldModule:ShowTooltipMainline()
     end
 
     local realmCharacters = {}
-    local currentRealm = GetRealmName()
+    local currentRealm = xb.constants.playerRealm
     local currentName = UnitName('player')
     local totalGold = 0
     if xb.db.profile.modules.gold.showWarbandBankGold then
@@ -573,7 +573,8 @@ end
 
 function GoldModule:FormatGold(money)
     if xb.db.profile.modules.gold.showSmallCoins then
-        return GetCoinTextureString(money)
+        local formatCoins = (C_CurrencyInfo and C_CurrencyInfo.GetCoinTextureString) or GetCoinTextureString
+        return formatCoins(money)
     else
         local gold = floor(abs(money / 10000))
         if xb.db.profile.modules.gold.shortThousands then

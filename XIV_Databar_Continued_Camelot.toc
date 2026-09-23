@@ -1,0 +1,21 @@
+## Interface: 16001
+## Title: XIV Databar Forever (experimental beta)
+## Author: ZelionGG, mvalezy
+## Version: 5.7.2-forever-beta.1
+## Notes: Experimental port for WoW Forever 1.60.1. In-game validation required; see FOREVER.md.
+## SavedVariables: XIVBarDB
+## IconTexture: Interface\AddOns\XIV_Databar_Continued\icon.png
+## AddonCompartmentFunc: XIV_Databar_Continued_OnAddonCompartmentClick
+## X-Website: https://github.com/mvalezy/XIV-Databar-Forever
+
+embeds.xml
+locales\locales.xml
+core.lua
+options.lua
+Core\compat.lua
+Core\utils\addons.lua
+Core\utils\changelog\Load_Changelog.xml
+Core\modules\load_modules.xml
+Mainline\modules\micromenu.lua
+Mainline\modules\talent.lua
+Core\modules\travel.lua
