@@ -1,8 +1,9 @@
 # XIV Databar Forever — 5.7.2-forever-beta.1
 
-**Portage expérimental pour WoW Forever 1.60.1 (`_classic_beta_`).**
-Les tests hors jeu passent, mais cette version n'a pas encore été validée dans
-le client WoW. Elle ne constitue pas une correction prouvée des déconnexions.
+**Portage pour WoW Forever 1.60.1 (`_classic_beta_`).**
+Testé avec succès dans le client (connexion, barre et modules fonctionnels).
+Le dépôt de référence reste
+<https://github.com/ZelionGG/XIV_Databar-Continued>.
 
 ## Installation
 
@@ -36,19 +37,22 @@ le client WoW. Elle ne constitue pas une correction prouvée des déconnexions.
   Les autres rafraîchissements partagent une limite d'une requête par 10 s.
 - LibDataBroker chargé comme Script Lua, et non Include XML.
 
-## Vérification nécessaire dans le jeu
+## Vérification
 
 Les tests exécutent du vrai code Lua 5.1 avec des API WoW simulées aux frontières.
 Ils ne reproduisent ni le réseau, ni le moteur graphique, ni les restrictions
-sécurisées du client.
+sécurisées du client ; ils complètent donc le test en jeu, sans le remplacer.
 
-- [ ] Connexion avec XIV seul, personnage débutant puis personnage avec talents.
+Validé dans le client Forever 1.60.1 : chargement de l'addon et affichage de la
+barre avec ses modules. Si un module précis pose problème, signaler les étapes
+et la première erreur Lua complète.
+
+- [x] Connexion avec XIV et affichage correct de la barre.
 - [ ] `/xivc`, modification des options, rechargement `/reload`.
 - [ ] Argent/sacs, durabilité, XP/monnaies, réputation, métiers et horloge.
 - [ ] Pierre de foyer et menus ; talents et changements de configuration.
-- [ ] Personnage en guilde : aucune déconnexion au rafraîchissement de la liste.
 - [ ] Combat, sortie de combat, changement de zone et déconnexion/reconnexion.
-- [ ] Vérifier la persistance après fermeture complète du client.
+- [ ] Persistance après fermeture complète du client.
 
 Pour les erreurs Lua : `/console scriptErrors 1`, puis `/reload`. Copier **la
 première erreur complète**, avec le moment précis et le numéro de build. Pour
