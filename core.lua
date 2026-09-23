@@ -43,6 +43,7 @@ function XIVBar:OnInitialize()
     -- Omit default profile so new characters get a per-character "Name - Realm" profile.
     -- Existing profileKeys (e.g. "Default") are preserved by AceDB.
     self.db = LibStub("AceDB-3.0"):New("XIVBarDB", self.defaults)
+    self.constants.playerRealm = self.db.keys.realm
     self.LSM:Register(self.LSM.MediaType.FONT, 'Homizio Bold',
                       self.constants.mediaPath .. "homizio_bold.ttf")
     self.frames = {}
@@ -208,7 +209,9 @@ end
 local PROFILE_SETUP_VERSION = 4
 
 function XIVBar:GetCharacterProfileKey()
-    return self.constants.playerName .. " - " .. self.constants.playerRealm
+    -- AceDB owns character identity. Forever uses rulesets (PvE/PvP/RP/
+    -- Hardcore), and GetRealmName() may not provide a traditional realm.
+    return self.db.keys.char
 end
 
 function XIVBar:HasCompletedProfileSetup()

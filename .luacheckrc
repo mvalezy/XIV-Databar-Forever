@@ -19,6 +19,7 @@ globals = {
 }
 
 read_globals = {
+    'GetBuildInfo',
     'abs',
     'ACCEPT',
     'ACCOUNT_BANK_PANEL_TITLE',

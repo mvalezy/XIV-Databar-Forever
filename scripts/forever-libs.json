@@ -1,0 +1,106 @@
+{
+  "dependencies": [
+    {
+      "name": "Ace3",
+      "ref": "1e98fc00874779334d7a3f0cb399c7ae9a15fead",
+      "url": "https://codeload.github.com/WoWUIDev/Ace3/zip/1e98fc00874779334d7a3f0cb399c7ae9a15fead",
+      "kind": "zip",
+      "destination": "Libs",
+      "sha256": "87d969635da5a9f5baf5ea5cc35d58f6f6d595b7ddb3ad4f96de795cbdca6701"
+    },
+    {
+      "name": "LibQTip-2.0",
+      "ref": "34ae9de6f809b5e525b946cc99efb64449621ef8",
+      "url": "https://codeload.github.com/Torhal/LibQTip-2.0/zip/34ae9de6f809b5e525b946cc99efb64449621ef8",
+      "kind": "zip",
+      "destination": "Libs/LibQTip-2.0",
+      "sha256": "2805e187bc90f52a35332a0a51e294e61a40598b9d7b11f6a8ce6891e1cbb617"
+    },
+    {
+      "name": "LibAddonCompat-1.0",
+      "ref": "28651b1058e8244461ae628a9176dc01ae63e2e6",
+      "url": "https://codeload.github.com/Eliote/LibAddonCompat-1.0/zip/28651b1058e8244461ae628a9176dc01ae63e2e6",
+      "kind": "zip",
+      "destination": "Classic/Libs/LibAddonCompat-1.0",
+      "sha256": "f5d3a53237549acf5e746260076014a8db1c49830b83d512bd6f742137d54f58"
+    },
+    {
+      "name": "LibDataBroker-1.1",
+      "ref": "1a63ede0248c11aa1ee415187c1f9c9489ce3e02",
+      "url": "https://codeload.github.com/tekkub/libdatabroker-1-1/zip/1a63ede0248c11aa1ee415187c1f9c9489ce3e02",
+      "kind": "zip",
+      "destination": "Libs/LibDataBroker-1.1",
+      "sha256": "b216021a49429d7a30a0f8ba10ba1cefbd439b161a4f2ad35f4900781fcb9183"
+    },
+    {
+      "name": "LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+      "url": "https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+      "kind": "file",
+      "destination": "Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.lua",
+      "sha256": "ea359e44eae4355c51a49a69960c878889ee26adac9d72d1362c22a3db6af6d0"
+    },
+    {
+      "name": "LibSharedMedia-3.0/lib.xml",
+      "url": "https://repos.wowace.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0/lib.xml",
+      "kind": "file",
+      "destination": "Libs/LibSharedMedia-3.0/lib.xml",
+      "sha256": "bd4f30d101a13ffb915114f6cd2d510fee506bca333f35387b3e08f238d85f8c"
+    },
+    {
+      "name": "SharedMediaWidgets/widget.xml",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/widget.xml",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/widget.xml",
+      "sha256": "4e17faca5fb4d54aa705959caebcfba57fc305b3f085dad7335ac8cad10090e8"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/widget.xml",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/widget.xml",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/widget.xml",
+      "sha256": "e3ff6572bc7d29da4f6591511c923bb9e22673e81883ba9df6683a6896212895"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/BackgroundWidget.lua",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/BackgroundWidget.lua",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/BackgroundWidget.lua",
+      "sha256": "a98f491caaec6406204616d12b53e666703100bf93a83e03e4e222635c15b634"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/BorderWidget.lua",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/BorderWidget.lua",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/BorderWidget.lua",
+      "sha256": "a00d00269cb139ae0465994d7076a5533c8d4795f27d6dd5c3c0f90ea0a77f6b"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/FontWidget.lua",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/FontWidget.lua",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/FontWidget.lua",
+      "sha256": "2855a05d6a0aa2d3c939c7f41c079ccf3f4adea506c3190707ac2d1bb6221403"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/SoundWidget.lua",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/SoundWidget.lua",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/SoundWidget.lua",
+      "sha256": "87e278a6f518bb25818c610f8858f65cd6a674ed25a3f7600d8b64b1603e9f1f"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/StatusbarWidget.lua",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/StatusbarWidget.lua",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/StatusbarWidget.lua",
+      "sha256": "0d9fe21f7c66d4de9b556125d2d6781b140ae1a0babdda3382f8e012160f8f68"
+    },
+    {
+      "name": "SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/prototypes.lua",
+      "url": "https://repos.wowace.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets/prototypes.lua",
+      "kind": "file",
+      "destination": "Libs/AceGUI-3.0-SharedMediaWidgets/AceGUI-3.0-SharedMediaWidgets/prototypes.lua",
+      "sha256": "f25f3c53110a7a51668e041edf54e178ea31f6afdc0a0030daed065945045522"
+    }
+  ]
+}
