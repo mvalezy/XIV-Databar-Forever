@@ -146,6 +146,16 @@ class PackageTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'Unsafe package entry'):
                     builder['validate_graph'](files)
 
+    def test_default_output_derives_from_manifest_version(self):
+        (self.root / 'XIV_Databar_Continued_Camelot.toc').write_text('## Interface: 16001\n## Version: 1.2.3\ncore.lua\n')
+        result = subprocess.run([sys.executable, str(BUILDER), '--root', str(self.root), '--lock', str(self.lock)], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        archive = self.root / 'dist' / 'XIV_Databar_Forever-1.2.3.zip'
+        self.assertTrue(archive.is_file(), result.stdout + result.stderr)
+        with zipfile.ZipFile(archive) as zipped:
+            self.assertIn('XIV_Databar_Continued/XIV_Databar_Continued.toc', zipped.namelist())
+        self.assertIn(str(archive), result.stdout)
+
     def test_explicit_manifest_selection(self):
         self.put('custom.toc', '## Interface: 16001\ncore.lua\n')
         (self.root / 'XIV_Databar_Continued_Camelot.toc').unlink()

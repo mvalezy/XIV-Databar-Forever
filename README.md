@@ -48,20 +48,71 @@
 
 ## Installation
 
-1. Exit WoW completely and back up the current addon folder plus
-   `WTF/Account/<account>/SavedVariables/XIV_Databar_Continued.lua`.
-2. Replace the old addon folder with the files from a
-   [release archive](https://github.com/mvalezy/XIV-Databar-Forever/releases),
-   so that you end up with:
-   `_classic_beta_\Interface\AddOns\XIV_Databar_Continued\`.
-3. The folder must be named `XIV_Databar_Continued` and contain
-   `XIV_Databar_Continued.toc`, `Core/`, `Mainline/`, `Libs/` and `options.lua`.
+**The repository does not contain the embedded libraries** (`Libs/`), by design:
+Ace3, LibSharedMedia, LibQTip, LibDataBroker and the others are not stored here.
+So **do not copy this folder into the game as-is** — it would load without its
+libraries and fail. One command fetches them and builds the ready-to-use addon
+folder.
+
+### Requirements
+
+- Windows (the game client runs there), plus **Python 3.10 or newer**
+  (`python --version` or `py --version` in PowerShell; install from
+  [python.org](https://www.python.org/downloads/) if needed).
+- An internet connection for the libraries, which are downloaded and
+  checksum-verified against the pinned versions in
+  `scripts/forever-libs.json`.
+- Keep the repository **outside** the game folder, otherwise WoW will try to
+  read it as an addon.
+
+### Steps (PowerShell)
+
+```powershell
+# 1. Get the code, once. (You can also use the green "Code" > "Download ZIP"
+#    button and unzip it wherever you like.)
+git clone https://github.com/mvalezy/XIV-Databar-Forever.git "$env:USERPROFILE\XIV-Databar-Forever"
+$addon = "$env:USERPROFILE\XIV-Databar-Forever"
+
+# 2. Build the complete addon folder: downloads the libraries, verifies the
+#    checksums, checks every file reference, then writes a ZIP.
+$py = "python"   # use "py" if that is what works on your machine
+& $py "$addon\scripts\package_forever.py"
+
+# 3. Install it into the game (change the path if your WoW is elsewhere).
+$wow = "D:\World of Warcraft\_classic_beta_\Interface\AddOns"
+$zip = Get-ChildItem "$addon\dist\XIV_Databar_Forever-*.zip" |
+       Sort-Object LastWriteTime | Select-Object -Last 1
+Expand-Archive $zip.FullName -DestinationPath $wow -Force
+```
+
+Before step 3, it is worth backing up `WTF\Account\<account>\SavedVariables\XIV_Databar_Continued.lua`
+and the old addon folder, in case you want to restore your settings.
+
+### Result to check
+
+You must end up with exactly this structure, `XIV_Databar_Continued` being the
+folder name given by the ZIP (do not rename it to `XIV-Databar-Forever`):
+
+```
+_classic_beta_\Interface\AddOns\XIV_Databar_Continued\
+├── XIV_Databar_Continued.toc     <- ## Interface: 16001
+├── Core\  Mainline\  locales\  media\
+├── Libs\                          <- downloaded by the packager
+├── core.lua  options.lua  embeds.xml  icon.png
+```
+
+Launch WoW, enable the addon for your character, then type `/xivc` in game.
+
+### Prebuilt archive
+
+If you would rather not run Python, grab the ZIP from the
+[releases page](https://github.com/mvalezy/XIV-Databar-Forever/releases) and
+extract it into `_classic_beta_\Interface\AddOns\`.
 
 > [!NOTE]
-> A ZIP downloaded from the green “Code” button has no libraries and will not
-> work. Use a release archive, or build one with
-> `python3 scripts/package_forever.py --output dist/forever.zip`
-> (see [FOREVER.md](FOREVER.md)).
+> Building manually with `python3 scripts/package_forever.py --output dist/forever.zip`
+> writes the archive wherever you ask. See [FOREVER.md](FOREVER.md) for the
+> tested commands and the known limitations.
 
 ## Credits
 

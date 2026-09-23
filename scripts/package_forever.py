@@ -24,6 +24,16 @@ def validate_package_path(name, context):
     return path
 
 
+def default_output(root, toc):
+    """dist/XIV_Databar_Forever-<version>.zip, derived from the manifest."""
+    for line in (root / toc).read_text(encoding='utf-8-sig').splitlines():
+        match = re.match(r'##\s*Version\s*:\s*(.+)$', line, re.I)
+        if match:
+            version = re.sub(r'[^A-Za-z0-9._-]', '_', match.group(1).strip()) or 'dev'
+            return root / 'dist' / f'XIV_Databar_Forever-{version}.zip'
+    return root / 'dist' / 'XIV_Databar_Forever-dev.zip'
+
+
 def source_files(root, toc):
     files = {}
     for path in sorted(root.rglob('*')):
@@ -117,21 +127,24 @@ def main():
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--toc', default=ADDON + '_Camelot.toc')
     parser.add_argument('--lock', type=Path, default=Path(__file__).with_name('forever-libs.json'))
-    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--output', type=Path, default=None,
+                        help='archive to write (default: dist/XIV_Databar_Forever-<version>.zip)')
     args = parser.parse_args()
+    output = args.output or default_output(args.root, args.toc)
     files = source_files(args.root, args.toc)
     files.update(dependency_files(args.lock))
     checked = validate_graph(files)
     print(f'Validated {checked} TOC/XML graph files')
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(args.output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name, content in sorted(files.items()):
             info = zipfile.ZipInfo(ADDON + '/' + name, date_time=(1980, 1, 1, 0, 0, 0))
             info.create_system = 3
             info.external_attr = 0o100644 << 16
             info.compress_type = zipfile.ZIP_DEFLATED
             archive.writestr(info, content, compresslevel=9)
-    print(f'{args.output}: {len(files)} files; sha256={hashlib.sha256(args.output.read_bytes()).hexdigest()}')
+    print(f'{output}: {len(files)} files; sha256={hashlib.sha256(output.read_bytes()).hexdigest()}')
+    print('Extract this archive into Interface\\AddOns\\ so you get AddOns\\' + ADDON + '\\')
 
 
 if __name__ == '__main__':

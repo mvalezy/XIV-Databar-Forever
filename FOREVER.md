@@ -7,17 +7,39 @@ Le dépôt de référence reste
 
 ## Installation
 
-1. Quitter complètement WoW. Sauvegarder le dossier existant de l'addon et ses
-   fichiers `WTF/Account/.../SavedVariables/XIV_Databar_Continued.lua` et `.bak`.
-2. Télécharger l'archive **XIV_Databar_Forever-5.7.2-forever-beta.1.zip** fournie
-   avec la version de test. **Ne pas utiliser « Code → Download ZIP »** : le
-   dépôt source ne contient pas les bibliothèques nécessaires.
-3. Déplacer l'ancien dossier de l'addon hors de `Interface/AddOns`, puis extraire
-   le ZIP dans `D:\World of Warcraft\_classic_beta_\Interface\AddOns\`.
-4. Vérifier le chemin final :
-   `Interface\AddOns\XIV_Databar_Continued\XIV_Databar_Continued.toc`.
-   Ne pas renommer le dossier en `XIV-Databar-Forever`.
-5. Tester d'abord avec **XIV seul**, puis ouvrir `/xivc`.
+Le dépôt ne contient **pas** `Libs/` : les bibliothèques embarquées sont
+téléchargées au moment de la construction. Il faut donc construire l'addon
+avant de le copier dans le jeu.
+
+```powershell
+# 1. Récupérer le code (une seule fois), hors du dossier du jeu
+git clone https://github.com/mvalezy/XIV-Databar-Forever.git "$env:USERPROFILE\XIV-Databar-Forever"
+$addon = "$env:USERPROFILE\XIV-Databar-Forever"
+
+# 2. Construire : télécharge les bibliothèques, vérifie leurs empreintes,
+#    valide les références puis écrit l'archive dans $addon\dist\
+$py = "python"   # ou "py" selon votre installation
+& $py "$addon\scripts\package_forever.py"
+
+# 3. Installer dans le jeu (adapter le chemin si nécessaire)
+$wow = "D:\World of Warcraft\_classic_beta_\Interface\AddOns"
+$zip = Get-ChildItem "$addon\dist\XIV_Databar_Forever-*.zip" |
+       Sort-Object LastWriteTime | Select-Object -Last 1
+Expand-Archive $zip.FullName -DestinationPath $wow -Force
+```
+
+Prérequis : Python 3.10 ou plus et un accès réseau. Sauvegarder au préalable
+l'ancien dossier de l'addon et
+`WTF\Account\<compte>\SavedVariables\XIV_Databar_Continued.lua`.
+
+Vérifier ensuite le chemin final :
+`Interface\AddOns\XIV_Databar_Continued\XIV_Databar_Continued.toc`
+(ne pas renommer le dossier en `XIV-Databar-Forever`), puis lancer le jeu et
+ouvrir `/xivc`.
+
+Une archive déjà construite est aussi disponible dans les
+[releases](https://github.com/mvalezy/XIV-Databar-Forever/releases) pour ceux qui
+ne veulent pas exécuter Python.
 
 ## Modifications
 
