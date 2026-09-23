@@ -12,11 +12,6 @@
 
   <p align="center">
     Personal fork of XIV_Databar Continued, adapted for <strong>World of Warcraft: Forever</strong> (beta 1.60.1)
-    <br />
-    <br />
-    <a href="https://github.com/mvalezy/XIV-Databar-Forever/issues">Report a Forever compatibility bug</a>
-    ·
-    <a href="https://github.com/ZelionGG/XIV_Databar-Continued">Original project</a>
   </p>
 </div>
 
@@ -62,8 +57,6 @@ folder.
 - An internet connection for the libraries, which are downloaded and
   checksum-verified against the pinned versions in
   `scripts/forever-libs.json`.
-- Keep the repository **outside** the game folder, otherwise WoW will try to
-  read it as an addon.
 
 ### Steps (PowerShell)
 
@@ -77,16 +70,7 @@ $addon = "$env:USERPROFILE\XIV-Databar-Forever"
 #    checksums, checks every file reference, then writes a ZIP.
 $py = "python"   # use "py" if that is what works on your machine
 & $py "$addon\scripts\package_forever.py"
-
-# 3. Install it into the game (change the path if your WoW is elsewhere).
-$wow = "D:\World of Warcraft\_classic_beta_\Interface\AddOns"
-$zip = Get-ChildItem "$addon\dist\XIV_Databar_Forever-*.zip" |
-       Sort-Object LastWriteTime | Select-Object -Last 1
-Expand-Archive $zip.FullName -DestinationPath $wow -Force
 ```
-
-Before step 3, it is worth backing up `WTF\Account\<account>\SavedVariables\XIV_Databar_Continued.lua`
-and the old addon folder, in case you want to restore your settings.
 
 ### Result to check
 
@@ -102,12 +86,6 @@ _classic_beta_\Interface\AddOns\XIV_Databar_Continued\
 ```
 
 Launch WoW, enable the addon for your character, then type `/xivc` in game.
-
-### Prebuilt archive
-
-If you would rather not run Python, grab the ZIP from the
-[releases page](https://github.com/mvalezy/XIV-Databar-Forever/releases) and
-extract it into `_classic_beta_\Interface\AddOns\`.
 
 > [!NOTE]
 > Building manually with `python3 scripts/package_forever.py --output dist/forever.zip`
@@ -132,10 +110,6 @@ All credit for the addon belongs to its original authors:
 - Locale contributors: PhatsoTGT (German), Amanthuul (Russian), Yaoenqi
   (Chinese), [class2u](https://github.com/class2u) (Chinese, Taiwan),
   [BrunoKrugel](https://github.com/BrunoKrugel) (Brazilian Portuguese).
-
-The WoW Forever adaptation was done by
-[mvalezy](https://github.com/mvalezy) with AI assistance and applies to this
-fork only.
 
 ## License
 
